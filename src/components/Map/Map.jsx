@@ -57,7 +57,7 @@ const MapComponent = () => {
         pitch: 0,
       }}
       onLoad={buttonClick}
-      mapStyle="mapbox://styles/mapbox/dark-v9"
+      mapStyle="mapbox://styles/mapbox/light-v10"
       mapboxAccessToken={TOKEN}
     >
       <GeolocateControl index="geolocateControl" position="top-left" ref={geoControlRef}/>

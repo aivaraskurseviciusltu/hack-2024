@@ -95,12 +95,13 @@ const Report = () => {
               handleSubmit,
             }) => (
               <form onSubmit={handleSubmit}>
-                <Box display="grid" gap="30px">
+                <Box display="grid" gap="15px">
                   <FormControl variant="filled" fullWidth>
-                    <InputLabel id="demo-simple-select-label">
+                    <InputLabel size="small" id="demo-simple-select-label">
                       Category
                     </InputLabel>
                     <Select
+                      size="small"
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={category}
@@ -115,32 +116,25 @@ const Report = () => {
                         },
                       }}
                     >
-                      <MenuItem value={"Enemy"}>
+                      <MenuItem value={"Alert"}>
                         {" "}
-                        <Pin1 iconType="Enemy" /> Enemy{" "}
+                        <Pin1 iconType="Alert" /> Alert{" "}
                       </MenuItem>
-                      <MenuItem value={"Explosion"}>
-                        {" "}
-                        <Pin1 iconType="Explosion" /> Explosion
+                      <MenuItem value={"Wheelchair"}>
+                        <Pin iconType="Wheelchair" /> Wheelchair
                       </MenuItem>
-                      <MenuItem value={"Help"}>
-                        <Pin iconType="Help" /> Humanitarian
+                      <MenuItem value={"Deaf"}>
+                        <Pin iconType="Deaf" />
+                        Deaf
                       </MenuItem>
-                      <MenuItem value={"Pickup"}>
-                        <Pin iconType="Pickup" />
-                        Help
-                      </MenuItem>
-                      <MenuItem value={"Resources"}>
-                        <Pin iconType="Resources" />
-                        Resources
-                      </MenuItem>
-                      <MenuItem value={"ShelterNoCount"}>
-                        <Pin iconType="ShelterNoCount" />
-                        Shelter
+                      <MenuItem value={"Blind"}>
+                        <Pin iconType="Blind" />
+                        Blind
                       </MenuItem>
                     </Select>
                   </FormControl>
                   <TextField
+                    size="small"
                     multiline
                     variant="filled"
                     type="text"

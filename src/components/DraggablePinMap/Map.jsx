@@ -56,7 +56,7 @@ const MapComponent = ({ setMarkerPosition }) => {
         bearing: 0,
         pitch: 0,
       }}
-      mapStyle="mapbox://styles/mapbox/dark-v9"
+      mapStyle="mapbox://styles/mapbox/light-v10"
       mapboxAccessToken={TOKEN}
     >
       <GeolocateControl position="top-left" />
