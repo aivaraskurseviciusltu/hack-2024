@@ -1,0 +1,21 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-122.4194, 37.7749],
+            [-122.4184, 37.7749],
+            [-122.4184, 37.7759],
+            [-122.4194, 37.7759],
+            [-122.4194, 37.7749]
+          ]
+        ]
+      },
+      "properties": { "name": "Floor 1" }
+    }
+  ]
+}
