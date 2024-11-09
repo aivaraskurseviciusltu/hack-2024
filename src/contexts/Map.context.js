@@ -13,14 +13,14 @@ const MapContextProvider = ({ children }) => {
       iconType: "currentLocation",
     },
     {
-      description: "We have available MREs here",
+      description: "Provide elevators with sufficient space and accessible buttons at a reachable height.",
       image: `${process.env.PUBLIC_URL + './assets/food.jpeg'}`,
       latitude: 54.69489908237602,
       longitude: 25.28025837421105,
       iconType: "Wheelchair",
     },
     {
-      description: "Have available 1 room with 2 beds, for any victim of invasion",
+      description: "Provide Braille menus and directories for easy access to information.",
       image:
           `${process.env.PUBLIC_URL + './assets/room.webp'}`,
       latitude: 54.693490273002475,
@@ -28,15 +28,15 @@ const MapContextProvider = ({ children }) => {
       iconType: "Blind",
     },
     {
-      description: "Bridge bombing recently",
+      description: "Approaching parking area includes a toll-bar be aware",
       image:
           `${process.env.PUBLIC_URL + './assets/bomb.jpeg'}`,
-      latitude: 54.69100172468465,
-      longitude: 25.279849937821062,
+      latitude: 54.69303610474269,
+      longitude: 25.282898588851634,
       iconType: "Alert",
     },
     {
-      description: "We offer first aid for any survivors on recent bombing",
+      description: "Provide tablets or digital devices for customers to place orders and read information without needing to speak or hear.",
       image:
           `${process.env.PUBLIC_URL + './assets/aid.jpeg'}`,
       latitude: 54.693700503812785,
@@ -44,7 +44,7 @@ const MapContextProvider = ({ children }) => {
       iconType: "Deaf",
     },
     {
-      description: "Enemy troops marching through",
+      description: "The elevator near entrance is temporarily out of service",
       image:
           `${process.env.PUBLIC_URL + './assets/enemy.jpeg'}`,
       latitude: 54.69970960219711,
@@ -53,7 +53,7 @@ const MapContextProvider = ({ children }) => {
     },
 
     {
-      description: "I've been hurt, can't walk, SOS",
+      description: "Provides ramp for those who cannot use stairs.",
       image:
           `${process.env.PUBLIC_URL + './assets/help.jpeg'}`,
       latitude: 54.69955928345105,

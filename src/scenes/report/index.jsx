@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import {
   Box,
   Button,
@@ -14,7 +14,6 @@ import { styled } from "@mui/material/styles";
 import * as yup from "yup";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Header from "../../components/Header";
-import { useContext, useState } from "react";
 import { MapContext } from "../../contexts/Map.context";
 import Pin from "../../components/Map/pin";
 import Pin1 from "../../components/Map/pin1";
@@ -22,7 +21,7 @@ import { useNavigate } from "react-router-dom";
 import Map from "../../components/DraggablePinMap/Map";
 
 const Report = () => {
-  const [category, setCategory] = useState(null);
+  const [category, setCategory] = useState(""); // Set to empty string initially
   const [fileURI, setFileURI] = useState();
   const navigate = useNavigate();
 
@@ -43,7 +42,7 @@ const Report = () => {
     };
     updateMarkers([...markers, updatedValues]);
 
-    setCategory(null);
+    setCategory(""); // Reset to empty string
     setFileURI(null);
 
     values.description = "";
@@ -87,13 +86,13 @@ const Report = () => {
             validationSchema={checkoutSchema}
           >
             {({
-              values,
-              errors,
-              touched,
-              handleBlur,
-              handleChange,
-              handleSubmit,
-            }) => (
+                values,
+                errors,
+                touched,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+              }) => (
               <form onSubmit={handleSubmit}>
                 <Box display="grid" gap="15px">
                   <FormControl variant="filled" fullWidth>
@@ -116,20 +115,19 @@ const Report = () => {
                         },
                       }}
                     >
+                      <MenuItem value="" disabled>
+                      </MenuItem>
                       <MenuItem value={"Alert"}>
-                        {" "}
-                        <Pin1 iconType="Alert" /> Alert{" "}
+                        <Pin1 iconType="Alert" /> Alert
                       </MenuItem>
                       <MenuItem value={"Wheelchair"}>
                         <Pin iconType="Wheelchair" /> Wheelchair
                       </MenuItem>
                       <MenuItem value={"Deaf"}>
-                        <Pin iconType="Deaf" />
-                        Deaf
+                        <Pin iconType="Deaf" /> Deaf
                       </MenuItem>
                       <MenuItem value={"Blind"}>
-                        <Pin iconType="Blind" />
-                        Blind
+                        <Pin iconType="Blind" /> Blind
                       </MenuItem>
                     </Select>
                   </FormControl>

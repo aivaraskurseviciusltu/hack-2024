@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, {useContext, useRef} from "react";
 import { useState, useMemo } from "react";
 import { Typography } from "@mui/material";
 import Map, {
@@ -18,6 +18,7 @@ const TOKEN =
 const MapComponent = ({ setMarkerPosition }) => {
   const [popupInfo, setPopupInfo] = useState(null);
   const { markers } = useContext(MapContext);
+  const geoControlRef = useRef();
 
   const pins = useMemo(
     () =>
@@ -48,7 +49,7 @@ const MapComponent = ({ setMarkerPosition }) => {
   );
 
   return (
-    <Map style={{ height: "50vh" }}
+    <Map style={{ height: "80vh", borderRadius: '10px' }}
       initialViewState={{
         latitude: 54.6943,
         longitude: 25.2836,
@@ -59,6 +60,7 @@ const MapComponent = ({ setMarkerPosition }) => {
       mapStyle="mapbox://styles/mapbox/light-v10"
       mapboxAccessToken={TOKEN}
     >
+      <GeolocateControl index="geolocateControl" position="top-left"  ref={geoControlRef}/>
       <GeolocateControl position="top-left" />
 
       <NavigationControl position="top-left" />

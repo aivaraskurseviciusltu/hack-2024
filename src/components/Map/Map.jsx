@@ -58,6 +58,7 @@ const MapComponent = () => {
       }}
       onLoad={buttonClick}
       mapStyle="mapbox://styles/mapbox/light-v10"
+      style={{borderRadius: '10px'}}
       mapboxAccessToken={TOKEN}
     >
       <GeolocateControl index="geolocateControl" position="top-left" ref={geoControlRef}/>

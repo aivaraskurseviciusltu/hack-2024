@@ -21,10 +21,10 @@ export const AVAILABLE_COLORS = [
   "#0693e3",
   "#fcb900",
   "#8ed1fc",
-  "#00d084",
+  "#ffffff",
   "#abb8c3",
   "#eb144c",
   "#f78da7",
-  "#7bdcb5",
+  "#ffffff",
   "#9900ef",
 ];

@@ -63,10 +63,10 @@ const Sidebar = () => {
           padding: "5px 35px 5px 20px !important",
         },
         "& .pro-inner-item:hover": {
-          color: "#4BCEAC !important",
+          color: "#005EFF !important",
         },
         "& .pro-menu-item.active": {
-          color: "#4BCEAC !important",
+          color: "#005EFF !important",
         },
       }}
     >
@@ -134,13 +134,6 @@ const Sidebar = () => {
               title="Report"
               to="/report"
               icon={<ReportProblemIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Alerts"
-              to="/alerts"
-              icon={<NotificationsActiveIcon />}
               selected={selected}
               setSelected={setSelected}
             />
