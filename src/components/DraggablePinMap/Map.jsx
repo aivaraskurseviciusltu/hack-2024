@@ -48,7 +48,7 @@ const MapComponent = ({ setMarkerPosition }) => {
   );
 
   return (
-    <Map
+    <Map style={{ height: "50vh" }}
       initialViewState={{
         latitude: 54.6943,
         longitude: 25.2836,
