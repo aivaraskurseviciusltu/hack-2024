@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/hack-2024/static/css/main.714dda56.css",
-    "main.js": "/hack-2024/static/js/main.4d874011.js",
-    "static/js/879.b519709d.chunk.js": "/hack-2024/static/js/879.b519709d.chunk.js",
-    "index.html": "/hack-2024/index.html",
-    "main.714dda56.css.map": "/hack-2024/static/css/main.714dda56.css.map",
-    "main.4d874011.js.map": "/hack-2024/static/js/main.4d874011.js.map",
-    "879.b519709d.chunk.js.map": "/hack-2024/static/js/879.b519709d.chunk.js.map"
+    "main.css": "/static/css/main.714dda56.css",
+    "main.js": "/static/js/main.133343e0.js",
+    "static/js/879.e30f3b56.chunk.js": "/static/js/879.e30f3b56.chunk.js",
+    "index.html": "/index.html",
+    "main.714dda56.css.map": "/static/css/main.714dda56.css.map",
+    "main.133343e0.js.map": "/static/js/main.133343e0.js.map",
+    "879.e30f3b56.chunk.js.map": "/static/js/879.e30f3b56.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.714dda56.css",
-    "static/js/main.4d874011.js"
+    "static/js/main.133343e0.js"
   ]
 }
