@@ -1,5 +1,4 @@
-import React, { useContext, useEffect } from "react";
-import { useState, useMemo } from "react";
+import React, { useContext, useEffect, useState, useMemo, useRef } from "react";
 import { Typography } from "@mui/material";
 import Map, {
   Marker,
@@ -10,7 +9,6 @@ import Map, {
 } from "react-map-gl";
 import Pin from "./pin";
 import { MapContext } from "../../contexts/Map.context";
-import { useRef } from "react";
 
 const TOKEN =
   "pk.eyJ1IjoibWFib25nIiwiYSI6ImNrMm9qN2tiYTEwc3ozZG41emx6bW9uZnQifQ.PhojWq3UwsAlPB7LBvJiTw"; // Set your mapbox token here
@@ -18,34 +16,85 @@ const TOKEN =
 const MapComponent = () => {
   const [popupInfo, setPopupInfo] = useState(null);
   const { markers } = useContext(MapContext);
+  const [userLocation, setUserLocation] = useState(null); // State to hold user coordinates
   const geoControlRef = useRef();
 
-  function buttonClick(){
-    const geolocateButton = document.querySelector('.mapboxgl-ctrl-geolocate');
-    geolocateButton.click()
-  }
+  // Function to calculate distance between two lat/lng coordinates
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Radius of the Earth in km
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c; // Distance in km
+    return distance;
+  };
+
+  // Function to handle geolocation and user position updates
+  const updateUserLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setUserLocation({ latitude, longitude });
+
+          // Check distance to each marker
+          markers.forEach((marker) => {
+            const distance = calculateDistance(
+              latitude,
+              longitude,
+              marker.latitude,
+              marker.longitude
+            );
+
+            // If the user is close to the marker (e.g., within 0.5 km), alert
+            if (marker.iconType === 'Alert' && distance < 0.05) {
+              console.log(`You are close to marker`, marker);
+              speakDescription(marker.description);
+            }
+          });
+        },
+        (error) => console.log(error),
+        { enableHighAccuracy: true, maximumAge: 10000, timeout: 5000 }
+      );
+    }
+  };
+
+  useEffect(() => {
+    updateUserLocation(); // Start tracking user location when component mounts
+  }, []);
 
   const pins = useMemo(
     () =>
       markers?.map((marker, index) => (
         <Marker
-          key={`marker-${index}`}
+          key={`${marker}-${index}`}
           longitude={marker.longitude}
           latitude={marker.latitude}
           anchor="bottom"
           onClick={(e) => {
-            // If we let the click event propagates to the map, it will immediately close the popup
-            // with `closeOnClick: true`
             e.originalEvent.stopPropagation();
             setPopupInfo(marker);
           }}
         >
           <Pin iconType={marker.iconType} />
         </Marker>
-
       )),
     [markers]
   );
+
+  const speakDescription = (description) => {
+    if (window.speechSynthesis) {
+      const utterance = new SpeechSynthesisUtterance(description);
+      utterance.lang = "en-US"; // Set the language for speech
+      window.speechSynthesis.speak(utterance); // Speak the description
+    }
+  };
 
   return (
     <Map
@@ -56,12 +105,12 @@ const MapComponent = () => {
         bearing: 0,
         pitch: 0,
       }}
-      onLoad={buttonClick}
+      onLoad={() => geoControlRef.current?.trigger()}
       mapStyle="mapbox://styles/mapbox/light-v10"
-      style={{borderRadius: '10px'}}
+      style={{ borderRadius: "10px" }}
       mapboxAccessToken={TOKEN}
     >
-      <GeolocateControl index="geolocateControl" position="top-left" ref={geoControlRef}/>
+      <GeolocateControl index="geolocateControl" position="top-left" ref={geoControlRef} />
       <NavigationControl position="top-left" />
       <ScaleControl />
       {pins}
@@ -72,12 +121,12 @@ const MapComponent = () => {
           longitude={Number(popupInfo.longitude)}
           latitude={Number(popupInfo.latitude)}
           onClose={() => setPopupInfo(null)}
-          style={{maxHeight: '100px', display:'flex', flexDirection:'column'}}
+          style={{ maxHeight: "100px", display: "flex", flexDirection: "column" }}
         >
-          <Typography variant="h5" color="black" >
+          <Typography variant="h5" color="black">
             {popupInfo.description}
           </Typography>
-          {popupInfo.image && <img width="100%" style={{maxHeight: "150px"}} src={popupInfo.image} />}
+          {popupInfo.image && <img width="100%" style={{ maxHeight: "150px" }} src={popupInfo.image} />}
         </Popup>
       )}
     </Map>
@@ -85,4 +134,3 @@ const MapComponent = () => {
 };
 
 export default MapComponent;
-
