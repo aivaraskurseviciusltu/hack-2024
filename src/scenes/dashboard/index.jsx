@@ -4,7 +4,7 @@ import Map from "../../components/Map/Map";
 const Dashboard = () => {
   return (
     <Box
-      m="20px"
+      style={{margin: 'auto', marginTop: '15px'}}
       sx={{
         width: "97%",
         height: "90%",

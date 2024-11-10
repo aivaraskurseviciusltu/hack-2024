@@ -124,45 +124,48 @@ const MapComponent = () => {
   const speakDescription = (description) => {
     if (window.speechSynthesis) {
       const utterance = new SpeechSynthesisUtterance(description);
-      utterance.lang = "en-US"; // Set the language for speech
-      window.speechSynthesis.speak(utterance); // Speak the description
+      utterance.lang = "en-US";
+      utterance.rate = 1;   // Normal speed
+      utterance.pitch = 1;  // Normal pitch
+      utterance.volume = 1; // Full volume
+      window.speechSynthesis.speak(utterance);
     }
   };
 
   return (
-    <Map
-      initialViewState={{
-        latitude: 54.6943,
-        longitude: 25.2836,
-        zoom: 15,
-        bearing: 0,
-        pitch: 0,
-      }}
-      onLoad={() => geoControlRef.current?.trigger()}
-      mapStyle="mapbox://styles/mapbox/light-v10"
-      style={{ borderRadius: "10px" }}
-      mapboxAccessToken={TOKEN}
-    >
-      <GeolocateControl index="geolocateControl" position="top-left" ref={geoControlRef} />
-      <NavigationControl position="top-left" />
-      <ScaleControl />
-      {pins}
+      <Map
+        initialViewState={{
+          latitude: 54.6943,
+          longitude: 25.2836,
+          zoom: 15,
+          bearing: 0,
+          pitch: 0,
+        }}
+        onLoad={() => geoControlRef.current?.trigger()}
+        mapStyle="mapbox://styles/mapbox/light-v10"
+        style={{borderRadius: "10px"}}
+        mapboxAccessToken={TOKEN}
+      >
+        <GeolocateControl index="geolocateControl" position="top-left" ref={geoControlRef}/>
+        <NavigationControl position="top-left"/>
+        <ScaleControl/>
+        {pins}
 
-      {popupInfo && (
-        <Popup
-          anchor="top"
-          longitude={Number(popupInfo.longitude)}
-          latitude={Number(popupInfo.latitude)}
-          onClose={() => setPopupInfo(null)}
-          style={{ maxHeight: "100px", display: "flex", flexDirection: "column" }}
-        >
-          <Typography variant="h5" color="black">
-            {popupInfo.description}
-          </Typography>
-          {popupInfo.image && <img width="100%" style={{ maxHeight: "150px" }} src={popupInfo.image} />}
-        </Popup>
-      )}
-    </Map>
+        {popupInfo && (
+          <Popup
+            anchor="top"
+            longitude={Number(popupInfo.longitude)}
+            latitude={Number(popupInfo.latitude)}
+            onClose={() => setPopupInfo(null)}
+            style={{maxHeight: "100px", display: "flex", flexDirection: "column"}}
+          >
+            <Typography variant="h5" color="black">
+              {popupInfo.description}
+            </Typography>
+            {popupInfo.image && <img width="100%" style={{maxHeight: "150px"}} src={popupInfo.image}/>}
+          </Popup>
+        )}
+      </Map>
   );
 };
 

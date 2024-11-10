@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { MapContextProvider } from "./contexts/Map.context";
+import * as serviceWorkerRegistration from './serviceWorkerService'; // Import service worker registration
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -15,3 +16,4 @@ root.render(
     </BrowserRouter>
   </React.StrictMode>
 );
+serviceWorkerRegistration.register();

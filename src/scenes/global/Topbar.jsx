@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import MapIcon from "@mui/icons-material/Map";
 import ReportProblemIcon from "@mui/icons-material/ReportProblem";
 import { useLocation } from "react-router-dom";
+import * as React from "react";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -25,27 +26,29 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
     <Link to={to} style={{ textDecoration: "none" }}>
       <MenuItem
         selected={selected === title}
-         sx={{
+        sx={{
           color: colors.grey[800],
-          backgroundColor: "transparent !important",  
+          backgroundColor: "transparent !important",
           "&.Mui-selected": {
-            backgroundColor: "transparent !important", 
+            backgroundColor: "transparent !important",
             color: colors.primary[500],
           },
           "&:hover": {
-            backgroundColor: "transparent !important",  
+            backgroundColor: "transparent !important",
           },
           "&:active": {
-            backgroundColor: "transparent !important",  
+            backgroundColor: "transparent !important",
           }
         }}
         disableRipple
         onClick={() => {
           setSelected(title);
         }}
-        icon={icon}
       >
-        <Typography style={{fontWeight: "bold"}} variant="h4">{title}</Typography>
+        {icon && <Box style={{    marginTop: '5px'}} mr={1}>{icon}</Box>} {/* Render the icon here */}
+        <Typography style={{ fontWeight: "bold" }} variant="h4">
+          {title}
+        </Typography>
       </MenuItem>
     </Link>
   );
@@ -56,11 +59,20 @@ const Topbar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
+  const blindIcon = process.env.PUBLIC_URL + "/icons/blind.svg"
 
   return (
-    <Box display="flex" justifyContent="space-between" flexGrow={1} sx={{backgroundColor: colors.white}}>
+    <Box display="flex" justifyContent="space-between" flexGrow={1} sx={{ backgroundColor: colors.white }}>
       <AppBar position="static">
-        <Toolbar  sx={{backgroundColor: colors.white, color: 'red'}}>
+        <Toolbar sx={{ backgroundColor: colors.white }}>
+          {/*<img src={blindIcon}  alt="Blind"/>*/}
+          <Item
+            title="Title"
+            to="/"
+            icon={<MapIcon />}
+            selected={selected}
+            setSelected={setSelected}
+          />
           <Box display="flex" justifyContent="flex-end" width="100%">
             <Item
               title="Map"
