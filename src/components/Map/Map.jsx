@@ -9,6 +9,7 @@ import Map, {
 } from "react-map-gl";
 import Pin from "./pin";
 import { MapContext } from "../../contexts/Map.context";
+import { useNavigate } from "react-router-dom";
 
 const TOKEN =
   "pk.eyJ1IjoibWFib25nIiwiYSI6ImNrMm9qN2tiYTEwc3ozZG41emx6bW9uZnQifQ.PhojWq3UwsAlPB7LBvJiTw"; // Set your mapbox token here
@@ -18,6 +19,9 @@ const MapComponent = () => {
   const { markers } = useContext(MapContext);
   const [userLocation, setUserLocation] = useState(null); // State to hold user coordinates
   const geoControlRef = useRef();
+  const navigate = useNavigate(); // For navigation if using React Router
+
+  const geoWatchRef = useRef(null); // Store the geolocation watcher ID
 
   // Function to calculate distance between two lat/lng coordinates
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
@@ -38,7 +42,7 @@ const MapComponent = () => {
   // Function to handle geolocation and user position updates
   const updateUserLocation = () => {
     if (navigator.geolocation) {
-      navigator.geolocation.watchPosition(
+      geoWatchRef.current = navigator.geolocation.watchPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
           setUserLocation({ latitude, longitude });
@@ -53,7 +57,7 @@ const MapComponent = () => {
             );
 
             // If the user is close to the marker (e.g., within 0.5 km), alert
-            if (marker.iconType === 'Alert' && distance < 0.05) {
+            if (marker.iconType === "Alert" && distance < 0.05) {
               console.log(`You are close to marker`, marker);
               speakDescription(marker.description);
             }
@@ -67,7 +71,36 @@ const MapComponent = () => {
 
   useEffect(() => {
     updateUserLocation(); // Start tracking user location when component mounts
-  }, []);
+
+    // Cleanup geolocation watcher when component unmounts or route changes
+    return () => {
+      if (geoWatchRef.current) {
+        navigator.geolocation.clearWatch(geoWatchRef.current);
+        geoWatchRef.current = null; // Reset geoWatchRef
+      }
+    };
+  }, []); // This will run once on mount and clean up on unmount
+
+  useEffect(() => {
+    // Listen for route changes and clear the geolocation watcher
+    const handleRouteChange = () => {
+      if (geoWatchRef.current) {
+        navigator.geolocation.clearWatch(geoWatchRef.current);
+        geoWatchRef.current = null; // Reset geoWatchRef
+      }
+    };
+
+    // Add event listener for route changes (if applicable)
+    navigate(handleRouteChange); // Optional: add logic when page changes
+
+    // Cleanup geolocation watcher on route change or unmount
+    return () => {
+      if (geoWatchRef.current) {
+        navigator.geolocation.clearWatch(geoWatchRef.current);
+        geoWatchRef.current = null;
+      }
+    };
+  }, [navigate]);
 
   const pins = useMemo(
     () =>

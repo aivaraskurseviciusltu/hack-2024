@@ -75,7 +75,7 @@ const Report = () => {
   });
 
   return (
-    <Box display="grid" gap="30px" m="20px">
+    <Box display="grid">
       <Header title="Add Report" subtitle="Create a New Report" />
 
       <Stack direction="column" spacing={2} style={{margin: '20px'}}>

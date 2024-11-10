@@ -1,24 +1,57 @@
-import React, {useContext, useRef} from "react";
-import { useState, useMemo } from "react";
+import React, { useContext, useState, useMemo, useRef, useEffect } from "react";
 import { Typography } from "@mui/material";
 import Map, {
   Marker,
   Popup,
   NavigationControl,
-  FullscreenControl,
   ScaleControl,
   GeolocateControl,
 } from "react-map-gl";
 import Pin from "./pin";
 import { MapContext } from "../../contexts/Map.context";
+import { useNavigate } from "react-router-dom"; // If using React Router
 
 const TOKEN =
   "pk.eyJ1IjoibWFib25nIiwiYSI6ImNrMm9qN2tiYTEwc3ozZG41emx6bW9uZnQifQ.PhojWq3UwsAlPB7LBvJiTw"; // Set your mapbox token here
 
+const DEFAULT_COORDINATES = { latitude: 54.6943, longitude: 25.2836 }; // Default coordinates
+
 const MapComponent = ({ setMarkerPosition }) => {
   const [popupInfo, setPopupInfo] = useState(null);
-  const { markers } = useContext(MapContext);
+  const { markers, updateMarkerPosition } = useContext(MapContext);
+  const [userLocation, setUserLocation] = useState(DEFAULT_COORDINATES); // Initialize with default coordinates
   const geoControlRef = useRef();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const geoWatchId = navigator.geolocation.watchPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        const newLocation = { latitude, longitude };
+        setUserLocation(newLocation);
+        setMarkerPosition(newLocation); // Set initial marker position if not dragged
+      },
+      (error) => console.log(error),
+      {
+        enableHighAccuracy: true,
+        maximumAge: 10000,
+        timeout: 300000,
+      }
+    );
+
+    return () => {
+      navigator.geolocation.clearWatch(geoWatchId);
+    };
+  }, [setMarkerPosition]);
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      console.log("Route has changed");
+    };
+
+    navigate(handleRouteChange);
+  }, [navigate]);
 
   const pins = useMemo(
     () =>
@@ -29,17 +62,12 @@ const MapComponent = ({ setMarkerPosition }) => {
           latitude={marker.latitude}
           anchor="bottom"
           onClick={(e) => {
-            // If we let the click event propagates to the map, it will immediately close the popup
-            // with `closeOnClick: true`
             e.originalEvent.stopPropagation();
             setPopupInfo(marker);
           }}
           draggable={marker.iconType === "currentLocation"}
           onDragEnd={(event) =>
-            setMarkerPosition({
-              longitude: event.lngLat.lng,
-              latitude: event.lngLat.lat,
-            })
+            handleDragEnd(event, marker)
           }
         >
           <Pin iconType={marker.iconType} />
@@ -48,23 +76,54 @@ const MapComponent = ({ setMarkerPosition }) => {
     [markers]
   );
 
+  const handleDragEnd = (event, marker) => {
+    const { lngLat } = event;
+    const newLocation = {
+      latitude: lngLat.lat,
+      longitude: lngLat.lng,
+    };
+
+    setMarkerPosition(newLocation);
+
+    if (marker.iconType === "currentLocation") {
+      setUserLocation(newLocation);
+    }
+
+    if (updateMarkerPosition) {
+      updateMarkerPosition(marker.id, newLocation);
+    }
+  };
+
   return (
-    <Map style={{ height: "80vh", borderRadius: '10px' }}
+    <Map
+      style={{ height: "80vh", borderRadius: "10px" }}
       initialViewState={{
-        latitude: 54.6943,
-        longitude: 25.2836,
+        latitude: userLocation.latitude,
+        longitude: userLocation.longitude,
         zoom: 15,
         bearing: 0,
         pitch: 0,
       }}
+      onLoad={() => geoControlRef.current?.trigger()}
       mapStyle="mapbox://styles/mapbox/light-v10"
       mapboxAccessToken={TOKEN}
     >
-      <GeolocateControl index="geolocateControl" position="top-left"  ref={geoControlRef}/>
-      <GeolocateControl position="top-left" />
-
+      <GeolocateControl index="geolocateControl" position="top-left" ref={geoControlRef} />
       <NavigationControl position="top-left" />
       <ScaleControl />
+
+      {userLocation && (
+        <Marker
+          longitude={userLocation.longitude}
+          latitude={userLocation.latitude}
+          anchor="bottom"
+          draggable
+          onDragEnd={(event) => handleDragEnd(event, { iconType: "currentLocation" })}
+          style={{ zIndex: 10 }}
+        >
+          <Pin iconType="currentLocation" />
+        </Marker>
+      )}
 
       {pins}
 

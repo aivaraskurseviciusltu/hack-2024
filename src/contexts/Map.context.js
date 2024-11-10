@@ -6,12 +6,12 @@ const MapContext = createContext({});
 // Create a provider component to wrap your app with
 const MapContextProvider = ({ children }) => {
   const [markers, setMarkers] = useState([
-    {
-      description: "My current location",
-      latitude: 54.6943,
-      longitude: 25.2836,
-      iconType: "currentLocation",
-    },
+    // {
+    //   description: "My current location",
+    //   latitude: 54.6943,
+    //   longitude: 25.2836,
+    //   iconType: "currentLocation",
+    // },
     {
       description: "Provide elevators with sufficient space and accessible buttons at a reachable height.",
       image: `${process.env.PUBLIC_URL + './assets/elevator.jpg'}`,

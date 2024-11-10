@@ -22,7 +22,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
   }, [location.pathname, setSelected]);
 
   return (
-    <Link to={to} style={{ textDecoration: "none"  }}>
+    <Link to={to} style={{ textDecoration: "none" }}>
       <MenuItem
         selected={selected === title}
          sx={{
@@ -45,7 +45,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
         }}
         icon={icon}
       >
-        <Typography variant="h4">{title}</Typography>
+        <Typography style={{fontWeight: "bold"}} variant="h4">{title}</Typography>
       </MenuItem>
     </Link>
   );
@@ -60,7 +60,7 @@ const Topbar = () => {
   return (
     <Box display="flex" justifyContent="space-between" flexGrow={1} sx={{backgroundColor: colors.white}}>
       <AppBar position="static">
-        <Toolbar  sx={{backgroundColor: colors.white}}>
+        <Toolbar  sx={{backgroundColor: colors.white, color: 'red'}}>
           <Box display="flex" justifyContent="flex-end" width="100%">
             <Item
               title="Map"
